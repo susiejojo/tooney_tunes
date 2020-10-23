@@ -41,11 +41,15 @@
   function create ()
   {
     // add sky
-    this.add.image(config.width/2,config.height/2,'sky').setScrollFactor(0);
+    sky = this.add.image(config.width/2,config.height/2,'sky').setScrollFactor(0);
+
+    sky.setScale(config.width, config.height);
+
 
     // create ground
     ground = this.physics.add.staticGroup();
-    ground.create(0, config.height, 'ground').setScale(window.innerWidth/).refreshBody();
+    ground_1 = ground.create(0, config.height, 'ground').setScale(window.innerWidth/400).refreshBody();
+
 
     // create platforms
     platforms = this.physics.add.staticGroup();
@@ -53,7 +57,7 @@
 
     // create player
 
-    player = this.physics.add.sprite(0, 450, 'dude');
+    player = this.physics.add.sprite(0, 0, 'dude');
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
@@ -118,7 +122,7 @@
   scoreText.setScrollFactor(0)
 
   // create text for health
-  healthText = this.add.text(config.width/2, 16, 'Health: 4', { fontSize: '32px', fill: '#000' });
+  healthText = this.add.text(scoreText.width*1.5 + scoreText.x, 16, 'Health: 4', { fontSize: '32px', fill: '#000' });
   healthText.setScrollFactor(0)
 
 
