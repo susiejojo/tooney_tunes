@@ -9,21 +9,21 @@ var request = require('request');
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
-var port = 5000; 
+var port = 5000;
 var redirect_uri = 'http://localhost:5000/callback';
 
 var generateRandomString = function(length) {
     var text = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  
+
     for (var i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
   };
-  
+
 var stateKey = 'spotify_auth_state';
-  
+
 
 app.get("/authenticate",function(req,res){
     var state = generateRandomString(16);
@@ -40,11 +40,11 @@ app.get("/authenticate",function(req,res){
 });
 
 app.get('/callback', function(req, res) {
-  
+
     var code = req.query.code || null;
     var state = req.query.state || null;
     var storedState = req.cookies ? req.cookies[stateKey] : null;
-  
+
     if (state === null || state !== storedState) {
       res.redirect('/#' +
         querystring.stringify({
@@ -64,23 +64,26 @@ app.get('/callback', function(req, res) {
         },
         json: true
       };
+
       console.log(authOptions);
       request.post(authOptions, function(error, response, body) {
         if (!error && response.statusCode === 200) {
-  
+
         var access_token = body.access_token,
-            refresh_token = body.refresh_token;
+        refresh_token = body.refresh_token;
 
         var options = {
-        url: 'https://api.spotify.com/v1/me',
-        headers: { 'Authorization': 'Bearer ' + access_token },
-        json: true
+          url: 'https://api.spotify.com/v1/me',
+          headers: { 'Authorization': 'Bearer ' + access_token },
+          json: true
         };
+
         console.log(access_token);
         console.log(refresh_token);
+
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-        console.log(body);
+          console.log(body);
         });
 
         var fetchOptions = {
@@ -90,21 +93,21 @@ app.get('/callback', function(req, res) {
             },
             json: true
           };
+
         request.get(fetchOptions, function(error,response,body){
             console.log(body);
         });
-    } else {
-        console.log(error);
-        res.redirect('/#' +
-        querystring.stringify({
-            error: 'invalid_token'
-        }));
-        }
-      });
-    }
-  });
+
+      } else {
+          console.log(error);
+          res.redirect('/#' +
+          querystring.stringify({
+              error: 'invalid_token'
+          }));
+      }
+    });
+  }
+});
 
 app.listen(port);
 console.log('server on ' + port);
-
-
