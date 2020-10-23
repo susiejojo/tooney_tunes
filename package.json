@@ -1,0 +1,22 @@
+{
+  "name": "tooney_tunes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/susiejojo/tooney_tunes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/susiejojo/tooney_tunes/issues"
+  },
+  "homepage": "https://github.com/susiejojo/tooney_tunes#readme",
+  "dependencies": {
+    "spotify-web-api-node": "^5.0.0"
+  }
+}
