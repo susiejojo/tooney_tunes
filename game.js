@@ -22,6 +22,11 @@
   var score = 0;
   var scoreText;
   var speed = 1;
+  var star_dist = 5;
+  var old_score = 0;
+  var obstacle_prob = 10;
+  var health = 4;
+  var platform_num = 1;
 
   function preload ()
   {
@@ -38,11 +43,12 @@
     // add sky
     this.add.image(400,300,'sky').setScrollFactor(0);
 
-    // create ground using tileSprite
+    // create ground
     ground = this.physics.add.staticGroup();
-
-    // add physics, set gravity to zero
     ground.create(0, config.height, 'ground').setScale(4).refreshBody();
+
+    // create platforms
+    platforms = this.physics.add.staticGroup();
 
 
     // create player
@@ -72,6 +78,8 @@
 
   // add collider between the player and any platforms
 
+  this.physics.add.collider(player, platforms);
+
   this.physics.add.collider(player, ground);
 
 
@@ -86,18 +94,32 @@
  // add star collider with platforms
 
  this.physics.add.collider(stars, ground);
+ this.physics.add.collider(stars, platforms);
 
  // let the user collect stars
 
  this.physics.add.overlap(player, stars, collectStar, null, this);
 
-  stars.children.iterate(function (child){
-  child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.5));
-});
+ // create obstacles
+
+ obstacles = this.physics.add.group();
+
+ obstacles.create(this.physics.world.bounds.right, 16, 'bomb');
+
+ this.physics.add.collider(obstacles, ground);
+ this.physics.add.collider(obstacles, platforms);
+
+ this.physics.add.collider(player, obstacles, loseHealth, null, this);
+
+
 
   // create text for the score
-  scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+  scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
   scoreText.setScrollFactor(0)
+
+  // create text for health
+  healthText = this.add.text(config.width/2, 16, 'Health: 4', { fontSize: '32px', fill: '#000' });
+  healthText.setScrollFactor(0)
 
 
 
@@ -122,13 +144,21 @@ function update ()
       }
     }, this);
 
+    Phaser.Actions.Call(obstacles.getChildren(), function(sprite) {
+      if(sprite.x + 30 < this.physics.world.bounds.left){
+          sprite.destroy();
+      }
+    }, this);
+
     if(ground.getFirst(true).x <= this.physics.world.bounds.left){
       ground.create(this.physics.world.bounds.left, config.height, 'ground').setScale(4).refreshBody();
     }
 
-    if(stars.getChildren().length <= 4){
-      stars.create(this.physics.world.bounds.right - 10, config.height-85, 'star');
+    // creates a new star if the number of stars dips below the distribution
+    // need to change with music implementation
 
+    if(stars.getChildren().length <= star_dist - 1){
+      stars.create(this.physics.world.bounds.right - 10, config.height-85, 'star');
     }
 
 
@@ -140,18 +170,48 @@ function update ()
     } else if(player.body.touching.down){
       player.setVelocityX(0);
     }
+
+
+    // speeds up the scrolling every 50 points, changes the distribution of stars randomly, and adds an obstacle
+    // need to change for music implementation
+
+    if(score >= old_score + 50){
+      speed += .5;
+      if(star_dist > 1){
+        star_dist -= 1;
+      }
+      old_score = score;
+      obstacles.create(this.physics.world.bounds.right, 16, 'bomb');
+    }
+
+    // no health, game over
+    if(health <= 0){
+      gameOver = true;
+    }
+
 }
 
 
+
+
+function loseHealth(player, obstacle){
+  obstacle.destroy();
+  player.setTint(0xff0000);
+  health -= 1;
+
+  healthText.setText('Health: ' + health);
+
+
+}
+
 function collectStar(player, star){
 
-  // disable the star's physics body and make it invisible
+  // destroy the star
   star.destroy();
 
   score += 10;
 
   scoreText.setText('Score: ' + score);
 
-  // refills stars if they're all gone
 
 }
