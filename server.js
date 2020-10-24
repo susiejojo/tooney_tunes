@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
-var music = require('./public/js/music.js');
-const fetch = require('node-fetch');
+const path=require('path');
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
@@ -25,7 +24,14 @@ var generateRandomString = function(length) {
   };
   
 var stateKey = 'spotify_auth_state';
-  
+
+app.get('/',function(req,res){
+  res.sendFile(path.join(__dirname+'/public/landing.html'))
+});
+
+app.get('/game.html',(req,res) => {
+  res.render('/public/game.html');
+});
 
 app.get("/authenticate",function(req,res){
     var state = generateRandomString(16);
@@ -95,8 +101,7 @@ app.get('/callback', function(req, res) {
           console.log(body["external_urls"]["spotify"]);
           // music.setAudio(body["external_urls"]["spotify"]);
           res.append('url',body["external_urls"]["spotify"]);
-          res.redirect('/#');
-          // document.getElementById("audioplay").src = body["external_urls"]["spotify"];
+          res.redirect('/game.html');
         });
 });
 
