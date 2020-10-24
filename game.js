@@ -24,7 +24,7 @@
   var star_dist = 5;
   var old_score = 0;
   var health = 4;
-  var time_elapsed = 0;
+  var old_time = 0;
 
 
   function preload ()
@@ -43,7 +43,6 @@
   {
     clock = this.plugins.get('rexclockplugin').add(this, config);
     clock.start();
-
     // add sky
     sky = this.add.image(400, 300,'sky').setScrollFactor(0);
 
@@ -57,9 +56,9 @@
 
     // create platforms
     platforms = this.physics.add.staticGroup();
-    platforms.create(600, 400, 'ground');
+    platform_1 = platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
+    platforms.create(700, 220, 'ground');
 
     // create player
 
@@ -98,7 +97,7 @@
   stars = this.physics.add.group({
     key: 'star',
     repeat: 5,
-    setXY: {x: 0, y: config.height - 80, stepX: 160}
+    setXY: {x: 0, y: 0, stepX: 160}
   });
 
  // add star collider with platforms
@@ -179,16 +178,16 @@ function update ()
 
     }
 
-    // creates new plaforms randomly
+    // creates new plaforms every 3 seconds
     // need to change with music implementation
 
-    var random = Phaser.Math.Between(0, 1000);
-
-    if(random < 1){
-      var platform_resize=  Phaser.Math.Between(1, 20);
-      var platform_y = Phaser.Math.Between(100, config.height-ground_1.height-player.height);
+    if(clock.now - old_time > 6000/speed){
+      var platform_resize =  Phaser.Math.Between(1, 20);
+      var platform_y = Phaser.Math.Between(100, config.height-ground_1.height-platform_1.height-player.height);
       new_platform = platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize/20, 1);
+      new_platform.x = this.physics.world.bounds.right + new_platform.width;
       new_platform.body.updateFromGameObject();
+      old_time = clock.now;
     }
 
 
@@ -215,18 +214,24 @@ function update ()
       }
       old_score = score;
 
-      var obstacle_y = Phaser.Math.Between(100, config.height-ground_1.height-player.height-10);
+      var obstacle_y = Phaser.Math.Between(100, config.height-ground_1.height-player.height-81);
       new_obstacle = obstacles.create(this.physics.world.bounds.right, obstacle_y, 'bomb');
       var obstacle_platform_resize =  Phaser.Math.Between(1, 20);
-      new_platform = platforms.create(this.physics.world.bounds.right, obstacle_y + 71, 'ground');
-      new_platform.setScale(obstacle_platform_resize/20, 1);
+      new_obs_platform = platforms.create(this.physics.world.bounds.right, obstacle_y + 71, 'ground');
+      new_obs_platform.setScale(obstacle_platform_resize/20, 1);
+      new_obs_platform.x = this.physics.world.bounds.right + new_obs_platform.width;
+      new_obs_platform.body.updateFromGameObject();
+      new_obstacle.x = this.physics.world.bounds.right + new_obs_platform.width;
 
     }
+
+
 
     // no health, game over
     if(health <= 0){
       gameOver = true;
     }
+
 
 
 
@@ -252,9 +257,8 @@ function collectStar(player, star){
   // destroy the star
   star.destroy();
 
-  //score += 10;
-
-  //scoreText.setText('Score: ' + score);
+  score += 10;
+  scoreText.setText('Score: ' + score);
 
 
 
