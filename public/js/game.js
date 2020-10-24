@@ -1,20 +1,25 @@
 
-  var config = {
-      type: Phaser.AUTO,
-      width: 800,
-      height: 600,
-      physics: {
+var config = {
+    type: Phaser.AUTO,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 800,
+        height: 600
+    },
+    physics: {
         default: 'arcade',
         arcade: {
-          gravity: {y:300},
-          debug: false,
+            gravity: { y: 300 },
+            debug: false
         }
-      },
-      scene: {
-          preload: preload,
-          create: create,
-          update: update
-      }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
   };
 
   var game = new Phaser.Game(config);
@@ -51,7 +56,7 @@
 
     // create ground
     ground = this.physics.add.staticGroup();
-    ground_1 = ground.create(0, config.height, 'ground').setScale(2).refreshBody();
+    ground_1 = ground.create(0, 400, 'ground').setScale(2).refreshBody();
 
 
     // create platforms
@@ -129,7 +134,7 @@
   healthText = this.add.text(scoreText.width*1.5 + scoreText.x, 16, 'Health: 4', { fontSize: '32px', fill: '#000' });
   healthText.setScrollFactor(0)
 
-
+  this.scale.startFullscreen();
 
 }
 
