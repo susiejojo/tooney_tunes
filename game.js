@@ -26,6 +26,7 @@
   var health = 4;
   var time_elapsed = 0;
 
+
   function preload ()
   {
     this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
@@ -40,6 +41,8 @@
 
   function create ()
   {
+    clock = this.plugins.get('rexclockplugin').add(this, config);
+    clock.start();
 
     // add sky
     sky = this.add.image(400, 300,'sky').setScrollFactor(0);
@@ -229,14 +232,9 @@ function update ()
 
 
 
+
 }
 
-
-
-function timer(){
-console.log("TIME ELAPSED" + time_elapsed);
-time_elapsed += 1;
-}
 
 
 function loseHealth(player, obstacle){
