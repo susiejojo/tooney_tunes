@@ -5,9 +5,12 @@
     <title>Tooney Tunes</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
     <style type="text/css">
-        body {
-          margin: 0;
-          padding:0;
+        #game {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          margin-top: -300px;
+          margin-left: -400px;
         }
 
         * {
@@ -17,8 +20,10 @@
 </head>
 <body>
 
+<div id="game">
 <script type="text/javascript" src="game.js">
 </script>
+</div>
 
 </body>
 </html>
