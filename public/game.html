@@ -10,27 +10,6 @@
     </style>
 
 </head>
-<body>
-    <!-- <audio id="audioplay"></audio> -->
-<!-- <iframe id = "audioplay" src="https://open.spotify.com/track/11dFghVXANMlKmJXsNCbNl" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe> -->
-
-<script>
-    function playaudio(){
-    var audio = document.getElementById("audioplay");
-    console.log("Play clicked!");
-    fetch("http://localhost:5000/authenticate",{
-        method: "GET",
-        headers: new Headers()
-    })
-        .then((resp) => resp.json())
-        .then(function(data){
-            audio.setAttribute.src=data.url;
-        })
-        .catch(function(error){
-            console.log(error);
-        })
-    }
-</script>
 <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.js"></script>
 <script type="text/javascript" src="js/game.js"></script>
 </body>

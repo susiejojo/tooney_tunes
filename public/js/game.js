@@ -1,4 +1,3 @@
-
 var config = {
     type: Phaser.AUTO,
     scale: {
@@ -56,7 +55,7 @@ var config = {
 
     // create ground
     ground = this.physics.add.staticGroup();
-    ground_1 = ground.create(0, 400, 'ground').setScale(2).refreshBody();
+    ground_1 = ground.create(0, 600, 'ground').setScale(2).refreshBody();
 
 
     // create platforms
@@ -132,9 +131,29 @@ var config = {
 
   // create text for health
   healthText = this.add.text(scoreText.width*1.5 + scoreText.x, 16, 'Health: 4', { fontSize: '32px', fill: '#000' });
-  healthText.setScrollFactor(0)
+  healthText.setScrollFactor(0);
 
-  this.scale.startFullscreen();
+  var button = this.add.image(800-16, 16, 'fullscreen', 0).setOrigin(1, 0).setInteractive();
+  button.setScrollFactor(0);
+  button.on('pointerup', function () {
+
+      if (this.scale.isFullscreen)
+      {
+          button.setFrame(0);
+
+          this.scale.stopFullscreen();
+
+      }
+      else
+      {
+          button.setFrame(1);
+
+          this.scale.startFullscreen();
+      }
+
+  }, this);
+
+
 
 }
 
@@ -170,7 +189,7 @@ function update ()
     }, this);
 
     if(ground.getFirst(true).x <= this.physics.world.bounds.left){
-      ground.create(this.physics.world.bounds.left, config.height, 'ground').setScale(4).refreshBody();
+      ground.create(this.physics.world.bounds.left, 600, 'ground').setScale(4).refreshBody();
     }
 
     // creates a new star if the number of stars dips below the distribution
