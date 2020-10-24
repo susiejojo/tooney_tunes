@@ -23,6 +23,7 @@
     "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",
     "request": "^2.88.2",
+    "socket.io": "^2.3.0",
     "spotify-web-api-node": "^5.0.0"
   }
 }
