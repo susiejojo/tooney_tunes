@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var music = require('./public/js/music.js');
+const fetch = require('node-fetch');
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
@@ -76,23 +78,29 @@ app.get('/callback', function(req, res) {
         headers: { 'Authorization': 'Bearer ' + access_token },
         json: true
         };
-        console.log(access_token);
-        console.log(refresh_token);
+        // console.log(access_token);
+        // console.log(refresh_token);
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
         console.log(body);
-        });
-
+        console.log(access_token);
         var fetchOptions = {
-            url: 'https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl',
-            headers: {
-              'Authorization': 'Bearer ' +access_token
-            },
-            json: true
-          };
-        request.get(fetchOptions, function(error,response,body){
-            console.log(body);
+          url: 'https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl',
+          headers: {
+            'Authorization': 'Bearer ' +access_token
+          },
+          json: true
+        }
+      request.get(fetchOptions, function(error,response,body){
+          console.log(body["external_urls"]["spotify"]);
+          // music.setAudio(body["external_urls"]["spotify"]);
+          res.append('url',body["external_urls"]["spotify"]);
+          res.redirect('/#');
+          // document.getElementById("audioplay").src = body["external_urls"]["spotify"];
         });
+});
+
+        
     } else {
         console.log(error);
         res.redirect('/#' +

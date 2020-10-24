@@ -12,11 +12,29 @@
 </head>
 <form action="/authenticate" method="GET">
 <input type="submit" value="Login"/>
+<input type="button" value ="PLAY" onclick="playaudio()">
 </form>
 <body>
+    <audio id="audioplay"></audio>
+<!-- <iframe id = "audioplay" src="https://open.spotify.com/track/11dFghVXANMlKmJXsNCbNl" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe> -->
 
-<script type="text/javascript" src="js/game.js">
+<script>
+    function playaudio(){
+    var audio = document.getElementById("audioplay");
+    console.log("Play clicked!");
+    fetch("http://localhost:5000/authenticate",{
+        method: "GET",
+        headers: new Headers()
+    })
+        .then((resp) => resp.json())
+        .then(function(data){
+            audio.setAttribute.src=data.url;
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+    }
 </script>
-
+<script type="text/javascript" src="js/game.js"></script>
 </body>
 </html>
