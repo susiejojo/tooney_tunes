@@ -213,8 +213,8 @@ function update() {
   // need to change with music implementation
 
   if (clock.now - old_time > 6000 / speed) {
-    var platform_resize = Phaser.Math.Between(1, 20);
-    var platform_y = Phaser.Math.Between(100, config.height - ground_1.height - platform_1.height - player.height);
+    var platform_resize = Phaser.Math.Between(2, 20);
+    var platform_y = Phaser.Math.Between(100, config.height - ground_1.height - platform_1.height - player.height - 100);
     new_platform = platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize / 20, 1);
     new_platform.x = this.physics.world.bounds.right + new_platform.width;
     new_platform.body.updateFromGameObject();
@@ -244,15 +244,8 @@ function update() {
       star_dist -= 1;
     }
     old_score = score;
+    new_obstacle = obstacles.create(this.physics.world.bounds.right, 0, 'bomb');
 
-    var obstacle_y = Phaser.Math.Between(100, config.height - ground_1.height - player.height - 81);
-    new_obstacle = obstacles.create(this.physics.world.bounds.right, obstacle_y, 'bomb');
-    var obstacle_platform_resize = Phaser.Math.Between(1, 20);
-    new_obs_platform = platforms.create(this.physics.world.bounds.right, obstacle_y + 71, 'ground');
-    new_obs_platform.setScale(obstacle_platform_resize / 20, 1);
-    new_obs_platform.x = this.physics.world.bounds.right + new_obs_platform.width;
-    new_obs_platform.body.updateFromGameObject();
-    new_obstacle.x = this.physics.world.bounds.right + new_obs_platform.width;
 
   }
 
