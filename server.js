@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 const path=require('path');
+const fs = require('fs');
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
@@ -24,7 +25,7 @@ var generateRandomString = function(length) {
   };
   
 var stateKey = 'spotify_auth_state';
-
+var acc_token = process.env.acctoken;
 app.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/public/landing.html'))
 });
@@ -84,24 +85,30 @@ app.get('/callback', function(req, res) {
         headers: { 'Authorization': 'Bearer ' + access_token },
         json: true
         };
-        // console.log(access_token);
-        // console.log(refresh_token);
-        // use the access token to access the Spotify Web API
+
         request.get(options, function(error, response, body) {
         console.log(body);
+        acc_token = access_token;
         console.log(access_token);
         var fetchOptions = {
-          url: 'https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl',
+          url: 'https://api.spotify.com/v1/audio-analysis/11dFghVXANMlKmJXsNCbNl',
           headers: {
             'Authorization': 'Bearer ' +access_token
           },
           json: true
         }
       request.get(fetchOptions, function(error,response,body){
-          console.log(body["external_urls"]["spotify"]);
+          console.log(body["track"]["tempo"]);
+          tempo = parseFloat(body["track"]["tempo"]);
           // music.setAudio(body["external_urls"]["spotify"]);
-          res.append('url',body["external_urls"]["spotify"]);
+          write_data = {
+            "tempo": body["track"]["tempo"]
+          }
+          fs.writeFile('public/assets/info.json', JSON.stringify(write_data), (err) => { 
+            if (err) throw err; 
+        }) 
           res.redirect('/game.html');
+          // return (body["track"]["tempo"]);
         });
 });
 
@@ -117,7 +124,23 @@ app.get('/callback', function(req, res) {
     }
   });
 
+app.get('/fetch',(req,res)=>{
+  var fetchOptions = {
+    url: 'https://api.spotify.com/v1/audio-analysis/11dFghVXANMlKmJXsNCbNl',
+    headers: {
+      'Authorization': acc_token
+    },
+    json: true
+  }
+  request.get(fetchOptions, function(error,response,body){
+      console.log(body["track"]["tempo"]);
+      tempo = parseFloat(body["track"]["tempo"]);
+      res.status(200).json(body["track"]["tempo"]);
+    });
+});
+
 app.listen(port);
 console.log('server on ' + port);
+
 
 

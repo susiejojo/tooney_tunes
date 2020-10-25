@@ -4,8 +4,8 @@ var config = {
         mode: Phaser.Scale.FIT,
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 800,
-        height: 600
+        width: window.innerWidth,
+        height: window.innerHeight
     },
     physics: {
         default: 'arcade',
@@ -21,6 +21,18 @@ var config = {
     }
   };
 
+  // $.ajax({
+  //   type: 'GET',
+  //   url: '/fetch',
+  //   success: function(data) {
+  //     tempo = data;
+  //     console.log(tempo);
+  //   },
+  //   error: function(xhr) {
+  //     console.log(xhr);
+  //   }
+  // });
+
   var game = new Phaser.Game(config);
   var score = 0;
   var scoreText;
@@ -31,6 +43,7 @@ var config = {
   var old_time = 0;
 
 
+
   function preload ()
   {
     this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
@@ -38,6 +51,7 @@ var config = {
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
+    this.load.json('ctrls','assets/info.json');
     this.load.spritesheet('dude', 'assets/dude.png',
           { frameWidth: 32, frameHeight: 48});
 
@@ -48,15 +62,14 @@ var config = {
     clock = this.plugins.get('rexclockplugin').add(this, config);
     clock.start();
     // add sky
-    sky = this.add.image(400, 300,'sky').setScrollFactor(0);
-
-
-
+    sky = this.add.image(0, 0,'sky').setOrigin(0,0).setScrollFactor(0);
 
     // create ground
     ground = this.physics.add.staticGroup();
-    ground_1 = ground.create(0, 600, 'ground').setScale(2).refreshBody();
-
+    ground_1 = ground.create(0, window.innerHeight, 'ground').setScale(2).refreshBody();
+    var newvar = this.cache.json.get('ctrls');
+    var tempo  = parseFloat(newvar.tempo);
+    console.log(JSON.stringify(newvar.tempo));
 
     // create platforms
     platforms = this.physics.add.staticGroup();
@@ -76,7 +89,7 @@ var config = {
     this.anims.create({
       key: 'right',
       frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-      frameRate: 10,
+      frameRate: Math.round(tempo)/10,
       repeat: -1
     });
 
