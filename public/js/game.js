@@ -33,11 +33,11 @@ var config = {
 var game = new Phaser.Game(config);
 var score = 0;
 var scoreText;
-var speed = 1;
 var star_dist = 5;
 var old_score = 0;
 var health = 4;
 var old_time = 0;
+var speed;
 
 
 
@@ -70,6 +70,7 @@ function create() {
   var newvar = this.cache.json.get('ctrls');
   var tempo = parseFloat(newvar.tempo);
   console.log(JSON.stringify(newvar.tempo));
+  speed = tempo/30;
 
   // create platforms
   platforms = this.physics.add.staticGroup();
@@ -212,14 +213,16 @@ function update() {
   // creates new plaforms every 3 seconds
   // need to change with music implementation
 
-  if (clock.now - old_time > 6000 / speed) {
+ if (clock.now - old_time > 6000 / speed) {
     var platform_resize = Phaser.Math.Between(2, 20);
     var platform_y = Phaser.Math.Between(100, config.height - ground_1.height - platform_1.height - player.height - 100);
     new_platform = platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize / 20, 1);
     new_platform.x = this.physics.world.bounds.right + new_platform.width;
     new_platform.body.updateFromGameObject();
     old_time = clock.now;
+
   }
+
 
 
 
@@ -239,7 +242,6 @@ function update() {
   // need to change for music implementation
 
   if (score >= old_score + 50) {
-    speed += .5;
     if (star_dist > 1) {
       star_dist -= 1;
     }
