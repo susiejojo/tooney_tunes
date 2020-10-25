@@ -74,8 +74,8 @@ function create() {
   ground_1 = ground.create(0, window.innerHeight, 'ground').setScale(2).refreshBody();
   var newvar = this.cache.json.get('ctrls');
   var tempo = parseFloat(newvar.tempo);
-  console.log(JSON.stringify(newvar.tempo));
   speed = tempo/30;
+  beats = newvar.beats;
 
   // create platforms
   platforms = this.physics.add.staticGroup();
@@ -206,22 +206,10 @@ function update() {
     ground.create(this.physics.world.bounds.left, 600, 'ground').setScale(4).refreshBody();
   }
 
-  // creates a new star if the number of stars dips below the distribution
-  // need to change with music implementation
-
-  if (stars.getChildren().length <= star_dist - 1) {
-    var star_x = Phaser.Math.Between(this.physics.world.bounds.left, this.physics.world.bounds.right);
-    var star_color = Phaser.Math.Between(0,3);
-    stars.create(this.physics.world.bounds.right - 10, 0, star_colors[star_color]).setScale(.2).refreshBody();
-
-
-  }
-
   // creates new plaforms every 3 seconds
-  // need to change with music implementation
 
  if (clock.now - old_time > 6000 / speed) {
-    var platform_resize = Phaser.Math.Between(2, 15);
+    var platform_resize = Phaser.Math.Between(2, 18);
     var platform_y = Phaser.Math.Between(100, config.height - ground_1.height - platform_1.height - player.height - 100);
     new_platform = platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize / 20, 1);
     new_platform.x = this.physics.world.bounds.right + new_platform.width;
@@ -229,9 +217,6 @@ function update() {
     old_time = clock.now;
 
   }
-
-
-
 
 
 
@@ -245,19 +230,22 @@ function update() {
   }
 
 
-  // speeds up the scrolling every 50 points, changes the distribution of stars randomly, and adds an obstacle
-  // need to change for music implementation
+  // adds a note or an obstacle on the beat
+  console.log(clock.now + " "  + beats[0]*1000.0);
 
-  if (score >= old_score + 50) {
-    if (star_dist > 1) {
-      star_dist -= 1;
+  for(beat in beats){
+    if (Math.abs((clock.now) - (beat*1000.0)) <= 10) {
+      var decide = Phaser.Math.Between(0,1)
+      if(decide > 0){
+        new_obstacle = obstacles.create(this.physics.world.bounds.right, 0, 'bomb').setSize(1.5).refreshBody();
+      } else {
+        var star_color = Phaser.Math.Between(0,3);
+        stars.create(this.physics.world.bounds.right - 10, 0, star_colors[star_color]).setScale(.2).refreshBody();
+      }
+      beats.splice(beats.indexOf(beat), 1);
+      break;
     }
-    old_score = score;
-    new_obstacle = obstacles.create(this.physics.world.bounds.right, 0, 'bomb');
-
-
-  }
-
+}
 
 
 
