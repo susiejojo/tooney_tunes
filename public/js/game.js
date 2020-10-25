@@ -57,7 +57,7 @@ function preload() {
     frameWidth: 32,
     frameHeight: 48
   });
-  this.load.audio('music', 'assets/bensound-goinghigher.mp3');
+  this.load.audio('music', 'assets/music/song.mp3');
 
 }
 
