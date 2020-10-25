@@ -58,6 +58,9 @@ function preload() {
   this.load.json('ctrls', 'assets/data/info.json');
   this.load.image('dude', 'assets/images/dino.png');
   this.load.audio('music', 'assets/music/song.mp3');
+  this.load.audio('music1', 'assets/music/song_conb.mp3');
+  this.load.audio('music2', 'assets/music/song_drums.mp3');
+  this.load.audio('music3', 'assets/music/song_other.mp3');
 
 }
 
@@ -65,6 +68,9 @@ function create() {
   clock = this.plugins.get('rexclockplugin').add(this, config);
   clock.start();
   music = this.sound.add('music');
+  music1 = this.sound.add('music1');
+  music2 = this.sound.add('music2');
+  music3 = this.sound.add('music3');
   music.play();
   // add sky
   sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2.3).setScrollFactor(0);
@@ -247,9 +253,6 @@ function update() {
     }
 }
 
-
-
-
   // no health, game over
   if (health <= 0) {
     music.stop();
@@ -257,28 +260,34 @@ function update() {
     this.scene.stop();
     health = 4;
     score = 0;
-    music.stop();
+    music2.stop();
   }
-
-
-
-
-
-
-
-
-
 }
-
-
 
 function loseHealth(player, obstacle) {
   obstacle.destroy();
   health -= 1;
   health_bar.destroy();
+  if (health==3){
+    var curtime = music.seek;
+    music.stop();
+    music1.play();
+    music1.setSeek(curtime);
+  }
+  if (health==2){
+    var curtime = music1.seek;
+    music1.stop();
+    music2.play();
+    music2.setSeek(curtime);
+  }
+  if (health==1){
+    var curtime = music2.seek;
+    music2.stop();
+    music3.play();
+    music3.setSeek(curtime);
+  }
   health_bar = this.add.image(700, 30, health_imgs[health]).setScale(1.3);
   health_bar.setScrollFactor(0);
-
 }
 
 function collectStar(player, star) {
