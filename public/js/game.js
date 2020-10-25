@@ -35,9 +35,9 @@ var score = 0;
 var scoreText;
 var star_dist = 5;
 var old_score = 0;
-var health = 4;
-var old_time = 0;
+var health = 1;
 var speed;
+var old_time = 0;
 
 
 
@@ -49,6 +49,11 @@ function preload() {
   this.load.image('orange', 'assets/orange.png');
   this.load.image('pink', 'assets/pink.png');
   this.load.image('blue', 'assets/blue.png');
+  this.load.image('heart_0', 'assets/hearts0.png');
+  this.load.image('heart_1', 'assets/hearts20.png');
+  this.load.image('heart_2', 'assets/hearts40.png');
+  this.load.image('heart_3', 'assets/hearts60.png');
+  this.load.image('heart_4', 'assets/hearts80.png');
   this.load.image('bomb', 'assets/bomb.png');
   this.load.json('ctrls', 'assets/info.json');
   this.load.image('dude', 'assets/dino.png');
@@ -149,14 +154,17 @@ function create() {
     fontSize: '32px',
     fill: '#000'
   });
-  scoreText.setScrollFactor(0)
+  scoreText.setScrollFactor(0);
 
-  // create text for health
-  healthText = this.add.text(scoreText.width * 1.5 + scoreText.x, 16, 'Health: 4', {
-    fontSize: '32px',
-    fill: '#000'
-  });
-  healthText.setScrollFactor(0);
+  // create health bar
+  health_imgs = ['heart_0', 'heart_1', 'heart_2', 'heart_3', 'heart_4']
+
+  health_bar = this.add.image(700, 30, health_imgs[health]).setScale(1.3);
+  health_bar.setScrollFactor(0);
+
+
+
+
 
 
 
@@ -255,7 +263,14 @@ function update() {
   // no health, game over
   if (health <= 0) {
     music.stop();
+    this.cameras.main.fade(2000, 0, 0, 0);
+    this.scene.stop();
+    health = 4;
+    score = 0;
+    music.stop();
   }
+
+
 
 
 
@@ -271,8 +286,9 @@ function loseHealth(player, obstacle) {
   obstacle.destroy();
   player.setTint(0xff0000);
   health -= 1;
-
-  healthText.setText('Health: ' + health);
+  health_bar.destroy();
+  health_bar = this.add.image(700, 30, health_imgs[health]).setScale(1.3);
+  health_bar.setScrollFactor(0);
 
 
 }
