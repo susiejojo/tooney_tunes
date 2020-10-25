@@ -43,20 +43,20 @@ var old_time = 0;
 
 function preload() {
   this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
-  this.load.image('sky', 'assets/background.png');
-  this.load.image('ground', 'assets/platform.png');
-  this.load.image('green', 'assets/green.png');
-  this.load.image('orange', 'assets/orange.png');
-  this.load.image('pink', 'assets/pink.png');
-  this.load.image('blue', 'assets/blue.png');
-  this.load.image('heart_0', 'assets/hearts0.png');
-  this.load.image('heart_1', 'assets/hearts20.png');
-  this.load.image('heart_2', 'assets/hearts40.png');
-  this.load.image('heart_3', 'assets/hearts60.png');
-  this.load.image('heart_4', 'assets/hearts80.png');
-  this.load.image('bomb', 'assets/bomb.png');
-  this.load.json('ctrls', 'assets/info.json');
-  this.load.image('dude', 'assets/dino.png');
+  this.load.image('sky', 'assets/images/background.png');
+  this.load.image('ground', 'assets/images/platform.png');
+  this.load.image('green', 'assets/images/green.png');
+  this.load.image('orange', 'assets/images/orange.png');
+  this.load.image('pink', 'assets/images/pink.png');
+  this.load.image('blue', 'assets/images/blue.png');
+  this.load.image('heart_0', 'assets/images/hearts0.png');
+  this.load.image('heart_1', 'assets/images/hearts20.png');
+  this.load.image('heart_2', 'assets/images/hearts40.png');
+  this.load.image('heart_3', 'assets/images/hearts60.png');
+  this.load.image('heart_4', 'assets/images/hearts80.png');
+  this.load.image('bomb', 'assets/images/bomb.png');
+  this.load.json('ctrls', 'assets/data/info.json');
+  this.load.image('dude', 'assets/images/dino.png');
   this.load.audio('music', 'assets/music/song.mp3');
 
 }

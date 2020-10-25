@@ -113,7 +113,7 @@ app.get('/callback', function (req, res) {
               "tempo": body["track"]["tempo"],
               "beats": beat_times
             }
-            fs.writeFile('public/assets/info.json', JSON.stringify(write_data), (err) => {
+            fs.writeFile('public/assets/data/info.json', JSON.stringify(write_data), (err) => {
               if (err) throw err;
             })
             res.redirect('/game.html');
