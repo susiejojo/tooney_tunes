@@ -3,7 +3,7 @@ var config = {
     scale: {
         mode: Phaser.Scale.FIT,
         parent: 'phaser-example',
-        autoCenter: Phaser.Scale.CENTER_BOTH,
+        autoCenter: Phaser.Scale.CENTER,
         width: 800,
         height: 600
     },
@@ -40,6 +40,7 @@ var config = {
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png',
           { frameWidth: 32, frameHeight: 48});
+    this.load.audio('music', 'assets/bensound-goinghigher.mp3');
 
   }
 
@@ -47,6 +48,8 @@ var config = {
   {
     clock = this.plugins.get('rexclockplugin').add(this, config);
     clock.start();
+    music = this.sound.add('music');
+    music.play();
     // add sky
     sky = this.add.image(400, 300,'sky').setScrollFactor(0);
 
@@ -172,6 +175,7 @@ function update ()
 
     Phaser.Actions.Call(ground.getChildren(), function(sprite) {
       if(sprite.x + 30 < this.physics.world.bounds.left){
+
           sprite.destroy();
       }
     }, this);
@@ -253,7 +257,7 @@ function update ()
 
     // no health, game over
     if(health <= 0){
-      gameOver = true;
+      music.stop();
     }
 
 
