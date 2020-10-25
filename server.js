@@ -11,6 +11,7 @@ var request = require('request');
 app.use(express.static(__dirname + '/public'))
   .use(cors())
   .use(cookieParser());
+
 var port = 5000;
 var redirect_uri = 'http://localhost:5000/callback';
 
@@ -26,6 +27,7 @@ var generateRandomString = function (length) {
 
 var stateKey = 'spotify_auth_state';
 var acc_token = process.env.acctoken;
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/landing.html'))
 });
@@ -100,17 +102,21 @@ app.get('/callback', function (req, res) {
             json: true
           }
           request.get(fetchOptions, function (error, response, body) {
-            console.log(body["track"]["tempo"]);
+            var beat_times = [];
+            for (var i = 0; i < body["beats"].length; i++) {
+              // console.log(body["beats"][i]["start"]);
+              beat_times.push(body["beats"][i]["start"]);
+            }
             tempo = parseFloat(body["track"]["tempo"]);
             // music.setAudio(body["external_urls"]["spotify"]);
             write_data = {
-              "tempo": body["track"]["tempo"]
+              "tempo": body["track"]["tempo"],
+              "beats": beat_times
             }
             fs.writeFile('public/assets/info.json', JSON.stringify(write_data), (err) => {
               if (err) throw err;
             })
             res.redirect('/game.html');
-            // return (body["track"]["tempo"]);
           });
         });
 
