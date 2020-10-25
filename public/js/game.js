@@ -45,7 +45,10 @@ function preload() {
   this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
   this.load.image('sky', 'assets/background.png');
   this.load.image('ground', 'assets/platform.png');
-  this.load.image('star', 'assets/star.png');
+  this.load.image('green', 'assets/green.png');
+  this.load.image('orange', 'assets/orange.png');
+  this.load.image('pink', 'assets/pink.png');
+  this.load.image('blue', 'assets/blue.png');
   this.load.image('bomb', 'assets/bomb.png');
   this.load.json('ctrls', 'assets/info.json');
   this.load.image('dude', 'assets/dino.png');
@@ -96,10 +99,11 @@ function create() {
   this.physics.add.collider(player, ground);
 
 
+
   // create stars
 
   stars = this.physics.add.group({
-    key: 'star',
+    key: 'blue',
     repeat: 5,
     setXY: {
       x: 0,
@@ -107,6 +111,17 @@ function create() {
       stepX: 160
     }
   });
+
+  star_colors = ['blue', 'pink', 'orange', 'green'];
+  index = 0;
+
+  stars.children.iterate(function (child) {
+    child.key = star_colors[index];
+    child.setScale(.2).refreshBody();
+    index += 1;
+
+  });
+
 
   // add star collider with platforms
 
@@ -188,7 +203,8 @@ function update() {
 
   if (stars.getChildren().length <= star_dist - 1) {
     var star_x = Phaser.Math.Between(this.physics.world.bounds.left, this.physics.world.bounds.right);
-    stars.create(this.physics.world.bounds.right - 10, 0, 'star');
+    var star_color = Phaser.Math.Between(0,3);
+    stars.create(this.physics.world.bounds.right - 10, 0, star_colors[star_color]).setScale(.2).refreshBody();
 
 
   }
