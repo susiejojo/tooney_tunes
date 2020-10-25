@@ -43,15 +43,12 @@ var speed;
 
 function preload() {
   this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
-  this.load.image('sky', 'assets/sky.png');
+  this.load.image('sky', 'assets/background.png');
   this.load.image('ground', 'assets/platform.png');
   this.load.image('star', 'assets/star.png');
   this.load.image('bomb', 'assets/bomb.png');
   this.load.json('ctrls', 'assets/info.json');
-  this.load.spritesheet('dude', 'assets/dude.png', {
-    frameWidth: 32,
-    frameHeight: 48
-  });
+  this.load.image('dude', 'assets/dino.png');
   this.load.audio('music', 'assets/music/song.mp3');
 
 }
@@ -62,7 +59,7 @@ function create() {
   music = this.sound.add('music');
   music.play();
   // add sky
-  sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScrollFactor(0);
+  sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2.3).setScrollFactor(0);
 
   // create ground
   ground = this.physics.add.staticGroup();
@@ -80,24 +77,10 @@ function create() {
 
   // create player
 
-  player = this.physics.add.sprite(0, 0, 'dude');
+  player = this.physics.add.sprite(0, 0, 'dude').setScale(2.3).refreshBody();
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
 
-
-  // creating the animation of the sprite
-
-  this.anims.create({
-    key: 'right',
-    frames: this.anims.generateFrameNumbers('dude', {
-      start: 5,
-      end: 8
-    }),
-    frameRate: Math.round(tempo) / 10,
-    repeat: -1
-  });
-
-  player.anims.play('right', true);
 
 
 
