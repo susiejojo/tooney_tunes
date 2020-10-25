@@ -221,7 +221,7 @@ function update() {
   // need to change with music implementation
 
  if (clock.now - old_time > 6000 / speed) {
-    var platform_resize = Phaser.Math.Between(2, 20);
+    var platform_resize = Phaser.Math.Between(2, 15);
     var platform_y = Phaser.Math.Between(100, config.height - ground_1.height - platform_1.height - player.height - 100);
     new_platform = platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize / 20, 1);
     new_platform.x = this.physics.world.bounds.right + new_platform.width;
@@ -260,6 +260,8 @@ function update() {
 
 
 
+
+
   // no health, game over
   if (health <= 0) {
     music.stop();
@@ -284,12 +286,10 @@ function update() {
 
 function loseHealth(player, obstacle) {
   obstacle.destroy();
-  player.setTint(0xff0000);
   health -= 1;
   health_bar.destroy();
   health_bar = this.add.image(700, 30, health_imgs[health]).setScale(1.3);
   health_bar.setScrollFactor(0);
-
 
 }
 
