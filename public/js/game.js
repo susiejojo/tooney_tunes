@@ -35,7 +35,7 @@ var score = 0;
 var scoreText;
 var star_dist = 5;
 var old_score = 0;
-var health = 1;
+var health = 4;
 var speed;
 var old_time = 0;
 
