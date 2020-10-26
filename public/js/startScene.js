@@ -4,6 +4,7 @@ class StartScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
    this.load.image('sky', 'assets/images/background.png');
    this.load.image('start', 'assets/images/start.png');
    this.load.image('restart', 'assets/images/restart.png');

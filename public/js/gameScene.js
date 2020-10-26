@@ -23,7 +23,6 @@ class GameScene extends Phaser.Scene{
   }
 
   preload(){
-    this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
     this.load.image('sky', 'assets/images/background.png');
     this.load.image('ground', 'assets/images/platform2.png');
     this.load.image('green', 'assets/images/green.png');
@@ -53,6 +52,12 @@ class GameScene extends Phaser.Scene{
     this.music2 = this.sound.add('music2');
     this.music3 = this.sound.add('music3');
     this.music.play();
+    this.music1.play();
+    this.music2.play();
+    this.music3.play();
+    this.music1.setMute(true);
+    this.music2.setMute(true);
+    this.music3.setMute(true);
     // add sky
     this.sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2.3).setScrollFactor(0);
 
@@ -237,16 +242,17 @@ class GameScene extends Phaser.Scene{
         break;
       }
   }
+  console.log(this.clock.now/10);
 
     // no health, game over
     if (this.health <= 0) {
       this.end();
     }
 
-
   }
 
   end(){
+    this.clock.stop();
     this.music.stop();
     this.music1.stop();
     this.music2.stop();
@@ -262,18 +268,18 @@ class GameScene extends Phaser.Scene{
     this.tint_time = this.clock.now;
     var curtime = this.music.seek;
     if (this.health==3){
-      this.music.stop();
-      this.music1.play();
+      this.music.setMute(true);
+      this.music1.setMute(false);
       this.music1.setSeek(curtime);
     }
     if (this.health==2){
-      this.music1.stop();
-      this.music2.play();
+      this.music1.setMute(true);
+      this.music2.setMute(false);
       this.music2.setSeek(curtime);
     }
     if (this.health==1){
-      this.music2.stop();
-      this.music3.play();
+      this.music2.setMute(true);
+      this.music3.setMute(false);
       this.music3.setSeek(curtime);
     }
     this.health_bar = this.add.image(700, 30, this.health_imgs[this.health]).setScale(1.3);
