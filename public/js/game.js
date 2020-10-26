@@ -218,7 +218,7 @@ function update() {
 
  if (clock.now - old_time > 6000 / speed) {
     var platform_resize = Phaser.Math.Between(2, 18);
-    var platform_y = Phaser.Math.Between(100, config.height - ground_1.height - platform_1.height - player.height - 100);
+    var platform_y = Phaser.Math.Between(100, config.height - ground_1.height - platform_1.height - player.displayHeight -100);
     new_platform = platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize / 20, 1);
     new_platform.x = this.physics.world.bounds.right + new_platform.width;
     new_platform.body.updateFromGameObject();
