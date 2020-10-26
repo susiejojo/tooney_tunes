@@ -39,14 +39,14 @@ var health = 4;
 var speed;
 var old_time = 0;
 var tint_time = 0;
-var obs_prob = 50;
+var obs_prob = 30;
 
 
 
 function preload() {
   this.load.plugin('rexclockplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexclockplugin.min.js', true);
   this.load.image('sky', 'assets/images/background.png');
-  this.load.image('ground', 'assets/images/platform.png');
+  this.load.image('ground', 'assets/images/platform2.png');
   this.load.image('green', 'assets/images/green.png');
   this.load.image('orange', 'assets/images/orange.png');
   this.load.image('pink', 'assets/images/pink.png');
