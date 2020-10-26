@@ -38,6 +38,8 @@ var old_score = 0;
 var health = 4;
 var speed;
 var old_time = 0;
+var tint_time = 0;
+var obs_prob = 50;
 
 
 
@@ -220,32 +222,35 @@ function update() {
     new_platform = platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize / 20, 1);
     new_platform.x = this.physics.world.bounds.right + new_platform.width;
     new_platform.body.updateFromGameObject();
+    if(obs_prob > 10){
+      obs_prob -= 1;
+    }
     old_time = clock.now;
 
   }
 
-
-
+  // lets the player jump using the spacebar
   cursors = this.input.keyboard.createCursorKeys();
 
   if (cursors.space.isDown && player.body.touching.down) {
     player.setVelocityY(-600);
     player.setVelocityX(0);
-  } else if (player.body.touching.down) {
-    player.setVelocityX(0);
+  }
+
+  // clears tint after 1s
+  if(clock.now - tint_time > 1000){
+    player.clearTint();
   }
 
 
-  // adds a note or an obstacle on the beat
-  console.log(clock.now + " "  + beats[0]*1000.0);
-
+  // adds a note or an obstacle on the beat based on a random probability
   for(beat in beats){
     if (Math.abs((clock.now) - (beat*1000.0)) <= 10) {
-      var decide = Phaser.Math.Between(0,1)
-      if(decide > 0){
-        new_obstacle = obstacles.create(this.physics.world.bounds.right, 0, 'bomb').setSize(1.5).refreshBody();
+      var decide = Phaser.Math.Between(0, obs_prob)
+      if(decide > obs_prob - 1){
+        new_obstacle = obstacles.create(this.physics.world.bounds.right, 0, 'bomb').setScale(2).refreshBody();
       } else {
-        var star_color = Phaser.Math.Between(0,3);
+        var star_color = Phaser.Math.Between(0, 3);
         stars.create(this.physics.world.bounds.right - 10, 0, star_colors[star_color]).setScale(.2).refreshBody();
       }
       beats.splice(beats.indexOf(beat), 1);
@@ -255,12 +260,14 @@ function update() {
 
   // no health, game over
   if (health <= 0) {
-    music.stop();
     this.cameras.main.fade(2000, 0, 0, 0);
+    music.stop();
+    music1.stop();
+    music2.stop();
+    music3.stop();
     this.scene.stop();
     health = 4;
     score = 0;
-    music2.stop();
   }
 }
 
@@ -268,6 +275,8 @@ function loseHealth(player, obstacle) {
   obstacle.destroy();
   health -= 1;
   health_bar.destroy();
+  player.setTint(0xff0000);
+  tint_time = clock.now;
   if (health==3){
     var curtime = music.seek;
     music.stop();
