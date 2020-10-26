@@ -107,14 +107,48 @@ app.get('/callback', function (req, res) {
               // console.log(body["beats"][i]["start"]);
               beat_times.push(body["beats"][i]["start"]);
             }
-            tempo = parseFloat(body["track"]["tempo"]);
-            // music.setAudio(body["external_urls"]["spotify"]);
-            write_data = {
-              "tempo": body["track"]["tempo"],
-              "beats": beat_times
+            var tempo = parseFloat(body["track"]["tempo"]);
+            var fetchOptions1 = {
+              url: 'https://api.spotify.com/v1/audio-analysis/6F5c58TMEs1byxUstkzVeM',
+              headers: {
+                'Authorization': 'Bearer ' + access_token
+              },
+              json: true
             }
-            fs.writeFile('public/assets/data/info.json', JSON.stringify(write_data), (err) => {
-              if (err) throw err;
+            request.get(fetchOptions1, function (error, response, body) {
+              var beat_times1 = [];
+              for (var i = 0; i < body["beats"].length; i++) {
+                // console.log(body["beats"][i]["start"]);
+                beat_times1.push(body["beats"][i]["start"]);
+              }
+              var tempo1 = parseFloat(body["track"]["tempo"]);
+              var fetchOptions2 = {
+                url: 'https://api.spotify.com/v1/audio-analysis/2nLtzopw4rPReszdYBJU6h',
+                headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                json: true
+              }
+              request.get(fetchOptions2, function (error, response, body) {
+                var beat_times2 = [];
+                for (var i = 0; i < body["beats"].length; i++) {
+                  // console.log(body["beats"][i]["start"]);
+                  beat_times2.push(body["beats"][i]["start"]);
+                }
+                var tempo2 = parseFloat(body["track"]["tempo"]);
+                write_data = {
+                  "tempo": tempo,
+                  "tempo1": tempo1,
+                  "tempo2": tempo2,
+                  "beats": beat_times,
+                  "beats1": beat_times1,
+                  "beats2": beat_times2
+                }
+                // console.log(JSON.stringify(write_data));
+                fs.writeFile('public/assets/data/info.json', JSON.stringify(write_data), (err) => {
+                  if (err) throw err;
+                })
+              })
             })
             res.redirect('/game.html');
           });
