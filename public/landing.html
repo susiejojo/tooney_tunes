@@ -3,20 +3,59 @@
 <head>
     <meta charset="UTF-8" />
     <title>Tooney Tunes</title>
+
+
+    <!-- Boostrap CDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
     <style type="text/css">
         body {
-            background-color: lime
+            background-color: limegreen;
+
         }
     </style>
+
+
 </head>
 
 <body>
-    <h1>Tooney Tunes</h1>
+    <div class="container">
+
+            
+        <div class="row">
+            <img src="/assets/images/dino-landing.png">
+        </div>
 
 
-    <form action="/authenticate" method="GET">
-        <input type="submit" value="Login"/>
-    </form>
+            
+        <center>
+            
+        <div class="row">
+            <p>
+                Adventure on a musical journey featuring your favorite song! Earn points by collecting musical notes and avoid getting hit with bombs. 
+            </p>
+            <p>
+                Controls: Space to jump    
+            </p>
+        </div>
+
+        </center>
+        <div class="row">
+            
+            <form action="/authenticate" method="GET">
+                <button class="btn btn-primary" type="submit" value="Login">Start</button>
+            </form>
+            
+        </div>
+
+
+
+
+
+    </div>
+
+
 
 </body>
 
