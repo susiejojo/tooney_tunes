@@ -1,14 +1,19 @@
 var config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    parent: 'phaser-example',
+    autoCenter: Phaser.Scale.CENTER,
+    width: 800,
+    height: 600
+  },
   physics: {
     default: 'arcade',
     arcade: {
       gravity: {
         y: 300
       },
-      debug: false
+      debug: true
     }
   },
   scene: {
@@ -170,6 +175,22 @@ function create() {
   health_bar = this.add.image(700, 30, health_imgs[health]).setScale(1.3);
   health_bar.setScrollFactor(0);
 
+  var button = this.add.image(800 - 16, 16, 'fullscreen', 0).setOrigin(1, 0).setInteractive();
+  button.setScrollFactor(0);
+  button.on('pointerup', function () {
+
+    if (this.scale.isFullscreen) {
+      button.setFrame(0);
+
+      this.scale.stopFullscreen();
+
+    } else {
+      button.setFrame(1);
+
+      this.scale.startFullscreen();
+    }
+
+  }, this);
 
 
 
