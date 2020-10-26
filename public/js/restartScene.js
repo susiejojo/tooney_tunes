@@ -10,8 +10,10 @@ class RestartScene extends Phaser.Scene {
   }
 
   create() {
-
     this.sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2.3).setScrollFactor(0);
+
+    var scoreText = this.add.text(0, 20, "Your Final Score: " + this.score, {font: "50px", fill: "black"});
+    scoreText.x = 400 - scoreText.width/2;
     var button1 = this.add.image(0, 200, 'restart', 0).setOrigin(0, 0).setInteractive();
     button1.x = (button1.width/4);
 
