@@ -16,8 +16,8 @@ class GameScene extends Phaser.Scene{
 
     // add in specific song information
     var songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
-      ['song2.mp3', 'song2_vocals.mp3', 'song2_drums.mp3', 'song2_bass.mp3'],
-      ['song3.mp3', 'song3_drums.mp3', 'song3_bass.mp3', 'song3_vocals.mp3']]
+      ['song1.mp3', 'song1_conb.mp3', 'song1_drums.mp3', 'song1_other.mp3'],
+      ['song2.mp3', 'song2_vocals.mp3', 'song2_other.mp3', 'song2_drums.mp3']]
     this.song_num = data.song;
     this.song_info = songs[this.song_num];
   }
@@ -215,7 +215,7 @@ class GameScene extends Phaser.Scene{
     var cursors = this.input.keyboard.createCursorKeys();
 
     if (cursors.space.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-700);
+      this.player.setVelocityY(-800);
       this.player.setVelocityX(0);
     }
 
