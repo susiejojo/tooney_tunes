@@ -15,11 +15,10 @@ class GameScene extends Phaser.Scene{
     this.obs_prob = 30;
 
     // add in specific song information
-    var songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
+    this.songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
       ['song2.mp3', 'song2_vocals.mp3', 'song2_drums.mp3', 'song2_bass.mp3'],
-      ['song1.mp3', 'song1_vocals.mp3', 'song1_drums.mp3', 'song1_bass.mp3']]
+      ['song1.mp3', 'song1_vocals.mp3', 'song1_drums.mp3', 'song1_bass.mp3']];
     this.song_num = data.song;
-    this.song_info = songs[this.song_num];
   }
 
   preload(){
@@ -37,20 +36,30 @@ class GameScene extends Phaser.Scene{
     this.load.image('bomb', 'assets/images/bomb.png');
     this.load.json('ctrls', 'assets/info.json');
     this.load.image('dude', 'assets/images/dino.png');
-    this.load.audio('music', 'assets/music/' + this.song_info[0]);
-    this.load.audio('music1', 'assets/music/' + this.song_info[1]);
-    this.load.audio('music2', 'assets/music/' + this.song_info[2]);
-    this.load.audio('music3', 'assets/music/' + this.song_info[3]);
+    this.music_list = [this.load.audio('music0', 'assets/music/' + this.songs[0][0]),
+    this.load.audio('music1', 'assets/music/' + this.songs[0][1]),
+    this.load.audio('music2', 'assets/music/' + this.songs[0][2]),
+    this.load.audio('music3', 'assets/music/' + this.songs[0][3]),
+    this.load.audio('music4', 'assets/music/' + this.songs[1][0]),
+    this.load.audio('music5', 'assets/music/' + this.songs[1][1]),
+    this.load.audio('music6', 'assets/music/' + this.songs[1][2]),
+    this.load.audio('music7', 'assets/music/' + this.songs[1][3]),
+    this.load.audio('music8', 'assets/music/' + this.songs[2][0]),
+    this.load.audio('music9', 'assets/music/' + this.songs[2][1]),
+    this.load.audio('music10', 'assets/music/' + this.songs[2][2]),
+    this.load.audio('music11', 'assets/music/' + this.songs[2][3])]
+
+
 
   }
 
   create(){
     this.clock = this.plugins.get('rexclockplugin').add(this, config);
     this.clock.start();
-    this.music = this.sound.add('music');
-    this.music1 = this.sound.add('music1');
-    this.music2 = this.sound.add('music2');
-    this.music3 = this.sound.add('music3');
+    this.music = this.sound.add('music' + this.song_num*4);
+    this.music1 = this.sound.add('music' + (this.song_num*4+1));
+    this.music2 = this.sound.add('music' + (this.song_num*4+2));
+    this.music3 = this.sound.add('music' + (this.song_num*4+3));
     this.music.play();
     this.music1.play();
     this.music2.play();
@@ -77,7 +86,6 @@ class GameScene extends Phaser.Scene{
       var tempo = parseFloat(newvar.tempo2);
       this.speed = tempo/30;
       this.beats = newvar.beats2;
-      console.log(this.beats)
     }
 
 
