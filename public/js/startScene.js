@@ -15,9 +15,9 @@ class StartScene extends Phaser.Scene {
  }
 
   create() {
-    this.sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2.3).setScrollFactor(0);
-    var button = this.add.image(0, 300, 'start', 0).setOrigin(0, 0).setInteractive();
-    button.x = 400-(button.width/2);
+    this.sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(4).setScrollFactor(0);
+    var button = this.add.image(900, 300, 'start', 0).setOrigin(0, 0).setScale(2).setInteractive();
+    button.x = 900-(button.width/2);
 
     button.on('pointerup', function () {
       this.scene.start("pickMusic");

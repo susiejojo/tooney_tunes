@@ -23,8 +23,9 @@ class GameScene extends Phaser.Scene{
   }
 
   preload(){
-    this.load.image('sky', 'assets/images/background.png');
+    this.load.image('sky', 'assets/images/bg2.png');
     this.load.image('ground', 'assets/images/platform2.png');
+    this.load.image('base','assets/images/base.png');
     this.load.image('green', 'assets/images/green.png');
     this.load.image('orange', 'assets/images/orange.png');
     this.load.image('pink', 'assets/images/pink.png');
@@ -59,11 +60,11 @@ class GameScene extends Phaser.Scene{
     this.music2.setMute(true);
     this.music3.setMute(true);
     // add sky
-    this.sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2.3).setScrollFactor(0);
+    this.sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(3.8).setScrollFactor(0);
 
     // create ground
     this.ground = this.physics.add.staticGroup();
-    this.ground_1 = this.ground.create(0, window.innerHeight, 'ground').setScale(2).refreshBody();
+    this.ground_1 = this.ground.create(0, 930, 'base').setScale(2).refreshBody();
     var newvar = this.cache.json.get('ctrls');
     if(this.song_num == 0){
       var tempo = parseFloat(newvar.tempo);
@@ -81,19 +82,15 @@ class GameScene extends Phaser.Scene{
 
     // create platforms
     this.platforms = this.physics.add.staticGroup();
-    this.platform_1 = this.platforms.create(600, 400, 'ground');
-    this.platforms.create(50, 250, 'ground');
-    this.platforms.create(700, 220, 'ground');
+    this.platform_1 = this.platforms.create(600, 800, 'ground');
+    this.platforms.create(200, 250, 'ground');
+    this.platforms.create(500, 220, 'ground');
 
     // create player
 
-    this.player = this.physics.add.sprite(0, 0, 'dude').setScale(2.3).refreshBody();
+    this.player = this.physics.add.sprite(0, 800, 'dude').setScale(2.3).refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
-
-
-
-
 
     // setting the gravity of the player
 
@@ -160,7 +157,7 @@ class GameScene extends Phaser.Scene{
     // create health bar
     this.health_imgs = ['heart_0', 'heart_1', 'heart_2', 'heart_3', 'heart_4']
 
-    this.health_bar = this.add.image(700, 30, this.health_imgs[this.health]).setScale(1.3);
+    this.health_bar = this.add.image(1700, 30, this.health_imgs[this.health]).setScale(1.3);
     this.health_bar.setScrollFactor(0);
   }
 
@@ -196,15 +193,15 @@ class GameScene extends Phaser.Scene{
     }, this);
 
     if (this.ground.getFirst(true).x <= this.physics.world.bounds.left) {
-      this.ground.create(this.physics.world.bounds.left, 600, 'ground').setScale(4).refreshBody();
+      this.ground.create(this.physics.world.bounds.left, 910, 'base').setScale(2).refreshBody();
     }
 
     // creates new plaforms every 3 seconds
 
    if (this.clock.now - this.old_time > 6000 / this.speed) {
       var platform_resize = Phaser.Math.Between(2, 18);
-      var platform_y = Phaser.Math.Between(100, 600 - this.ground_1.height - this.platform_1.height - this.player.displayHeight -150);
-      var new_platform = this.platforms.create(this.physics.world.bounds.right, platform_y + 71, 'ground').setScale(platform_resize / 20, 1);
+      var platform_y = Phaser.Math.Between(100, 800 - this.ground_1.height - this.platform_1.height - this.player.displayHeight -100);
+      var new_platform = this.platforms.create(this.physics.world.bounds.right, platform_y + 101, 'ground').setScale(platform_resize / 20, 1);
       new_platform.x = this.physics.world.bounds.right + new_platform.width;
       new_platform.body.updateFromGameObject();
       if(this.obs_prob > 10){
@@ -218,7 +215,7 @@ class GameScene extends Phaser.Scene{
     var cursors = this.input.keyboard.createCursorKeys();
 
     if (cursors.space.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-600);
+      this.player.setVelocityY(-700);
       this.player.setVelocityX(0);
     }
 
@@ -282,7 +279,7 @@ class GameScene extends Phaser.Scene{
       this.music3.setMute(false);
       this.music3.setSeek(curtime);
     }
-    this.health_bar = this.add.image(700, 30, this.health_imgs[this.health]).setScale(1.3);
+    this.health_bar = this.add.image(1700, 30, this.health_imgs[this.health]).setScale(1.3);
     this.health_bar.setScrollFactor(0);
   }
 
