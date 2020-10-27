@@ -17,7 +17,7 @@ class GameScene extends Phaser.Scene{
     // add in specific song information
     var songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
       ['song2.mp3', 'song2_vocals.mp3', 'song2_drums.mp3', 'song2_bass.mp3'],
-      ['song3.mp3', 'song3_drums.mp3', 'song3_bass.mp3', 'song3_vocals.mp3']]
+      ['song1.mp3', 'song1_vocals.mp3', 'song1_drums.mp3', 'song1_bass.mp3']]
     this.song_num = data.song;
     this.song_info = songs[this.song_num];
   }
@@ -35,7 +35,7 @@ class GameScene extends Phaser.Scene{
     this.load.image('heart_3', 'assets/images/hearts60.png');
     this.load.image('heart_4', 'assets/images/hearts80.png');
     this.load.image('bomb', 'assets/images/bomb.png');
-    this.load.json('ctrls', 'assets/data/info.json');
+    this.load.json('ctrls', 'assets/info.json');
     this.load.image('dude', 'assets/images/dino.png');
     this.load.audio('music', 'assets/music/' + this.song_info[0]);
     this.load.audio('music1', 'assets/music/' + this.song_info[1]);
@@ -77,7 +77,9 @@ class GameScene extends Phaser.Scene{
       var tempo = parseFloat(newvar.tempo2);
       this.speed = tempo/30;
       this.beats = newvar.beats2;
+      console.log(this.beats)
     }
+
 
     // create platforms
     this.platforms = this.physics.add.staticGroup();
@@ -242,7 +244,6 @@ class GameScene extends Phaser.Scene{
         break;
       }
   }
-  console.log(this.clock.now/10);
 
     // no health, game over
     if (this.health <= 0) {

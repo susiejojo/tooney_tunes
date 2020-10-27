@@ -26,7 +26,7 @@ class PickScene extends Phaser.Scene {
     }, this);
 
     button3.on('pointerup', function () {
-      this.scene.start("playGame", {song: 0});
+      this.scene.start("playGame", {song: 2});
 
     }, this);
   }
