@@ -216,7 +216,7 @@ class GameScene extends Phaser.Scene{
 
     if (cursors.space.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-800);
-      this.player.setVelocityX(0);
+      this.player.setVelocityX(5);
     }
 
     // clears tint after 1s
