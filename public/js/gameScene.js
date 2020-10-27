@@ -34,7 +34,7 @@ class GameScene extends Phaser.Scene{
     this.load.image('heart_3', 'assets/images/hearts60.png');
     this.load.image('heart_4', 'assets/images/hearts80.png');
     this.load.image('bomb', 'assets/images/bomb.png');
-    this.load.json('ctrls', 'assets/info.json');
+    this.load.json('ctrls', 'assets/dat/info.json');
     this.load.spritesheet('dude',
         'assets/images/dinoSprite.png',
         { frameWidth: 24, frameHeight: 24 }
