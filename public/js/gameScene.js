@@ -35,7 +35,10 @@ class GameScene extends Phaser.Scene{
     this.load.image('heart_4', 'assets/images/hearts80.png');
     this.load.image('bomb', 'assets/images/bomb.png');
     this.load.json('ctrls', 'assets/info.json');
-    this.load.image('dude', 'assets/images/dino.png');
+    this.load.spritesheet('dude',
+        'assets/images/dinoSprite.png',
+        { frameWidth: 24, frameHeight: 24 }
+    );
     this.music_list = [this.load.audio('music0', 'assets/music/' + this.songs[0][0]),
     this.load.audio('music1', 'assets/music/' + this.songs[0][1]),
     this.load.audio('music2', 'assets/music/' + this.songs[0][2]),
@@ -67,6 +70,7 @@ class GameScene extends Phaser.Scene{
     this.music1.setMute(true);
     this.music2.setMute(true);
     this.music3.setMute(true);
+
     // add sky
     this.sky = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2.3).setScrollFactor(0);
 
@@ -74,16 +78,17 @@ class GameScene extends Phaser.Scene{
     this.ground = this.physics.add.staticGroup();
     this.ground_1 = this.ground.create(0, window.innerHeight, 'ground').setScale(2).refreshBody();
     var newvar = this.cache.json.get('ctrls');
+    var tempo;
     if(this.song_num == 0){
-      var tempo = parseFloat(newvar.tempo);
+      tempo = parseFloat(newvar.tempo);
       this.speed = tempo/30;
       this.beats = newvar.beats;
     } else if(this.song_num == 1){
-      var tempo = parseFloat(newvar.tempo1);
+      tempo = parseFloat(newvar.tempo1);
       this.speed = tempo/30;
       this.beats = newvar.beats1;
     } else {
-      var tempo = parseFloat(newvar.tempo2);
+      tempo = parseFloat(newvar.tempo2);
       this.speed = tempo/30;
       this.beats = newvar.beats2;
     }
@@ -100,6 +105,23 @@ class GameScene extends Phaser.Scene{
     this.player = this.physics.add.sprite(0, 0, 'dude').setScale(2.3).refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
+
+    this.anims.create({
+    key: 'right',
+    frames: this.anims.generateFrameNumbers('dude', { start: 1, end: 9 }),
+    frameRate: tempo/10,
+    repeat: -1
+    });
+
+    this.anims.create({
+    key: 'jump',
+    frames: this.anims.generateFrameNumbers('dude', { start: 10, end: 13 }),
+    frameRate: (tempo/10)/3
+    });
+
+    this.player.anims.play('right', true);
+
+
 
 
 
@@ -228,9 +250,13 @@ class GameScene extends Phaser.Scene{
     var cursors = this.input.keyboard.createCursorKeys();
 
     if (cursors.space.isDown && this.player.body.touching.down) {
+      this.player.anims.play('jump', true);
       this.player.setVelocityY(-600);
       this.player.setVelocityX(0);
+    } else if(this.player.body.touching.down){
+      this.player.anims.play('right', true);
     }
+
 
     // clears tint after 1s
     if(this.clock.now - this.tint_time > 1000){
