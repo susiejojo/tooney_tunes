@@ -15,11 +15,10 @@ class GameScene extends Phaser.Scene{
     this.obs_prob = 30;
 
     // add in specific song information
-    var songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
+    this.songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
       ['song1.mp3', 'song1_conb.mp3', 'song1_drums.mp3', 'song1_other.mp3'],
-      ['song2.mp3', 'song2_vocals.mp3', 'song2_other.mp3', 'song2_drums.mp3']]
+      ['song2.mp3', 'song2_vocals.mp3', 'song2_other.mp3', 'song2_drums.mp3']];
     this.song_num = data.song;
-    this.song_info = songs[this.song_num];
   }
 
   preload(){
@@ -37,21 +36,31 @@ class GameScene extends Phaser.Scene{
     this.load.image('heart_4', 'assets/images/hearts80.png');
     this.load.image('bomb', 'assets/images/bomb.png');
     this.load.json('ctrls', 'assets/data/info.json');
-    this.load.image('dude', 'assets/images/dino.png');
-    this.load.audio('music', 'assets/music/' + this.song_info[0]);
-    this.load.audio('music1', 'assets/music/' + this.song_info[1]);
-    this.load.audio('music2', 'assets/music/' + this.song_info[2]);
-    this.load.audio('music3', 'assets/music/' + this.song_info[3]);
-
+    this.load.spritesheet('dude',
+        'assets/images/dinoSprite.png',
+        { frameWidth: 24, frameHeight: 24 }
+    );
+    this.music_list = [this.load.audio('music0','assets/music/' + this.songs[0][0]),
+    this.load.audio('music1', 'assets/music/' + this.songs[0][1]),
+    this.load.audio('music2', 'assets/music/' + this.songs[0][2]),
+    this.load.audio('music3', 'assets/music/' + this.songs[0][3]),
+    this.load.audio('music4', 'assets/music/' + this.songs[1][0]),
+    this.load.audio('music5', 'assets/music/' + this.songs[1][1]),
+    this.load.audio('music6', 'assets/music/' + this.songs[1][2]),
+    this.load.audio('music7', 'assets/music/' + this.songs[1][3]),
+    this.load.audio('music8', 'assets/music/' + this.songs[2][0]),
+    this.load.audio('music9', 'assets/music/' + this.songs[2][1]),
+    this.load.audio('music10', 'assets/music/' + this.songs[2][2]),
+    this.load.audio('music11', 'assets/music/' + this.songs[2][3])]
   }
 
   create(){
     this.clock = this.plugins.get('rexclockplugin').add(this, config);
     this.clock.start();
-    this.music = this.sound.add('music');
-    this.music1 = this.sound.add('music1');
-    this.music2 = this.sound.add('music2');
-    this.music3 = this.sound.add('music3');
+    this.music = this.sound.add('music' + this.song_num*4);
+    this.music1 = this.sound.add('music'+(this.song_num*4+1));
+    this.music2 = this.sound.add('music'+(this.song_num*4+2));
+    this.music3 = this.sound.add('music'+(this.song_num*4+3));
     this.music.play();
     this.music1.play();
     this.music2.play();
@@ -66,16 +75,17 @@ class GameScene extends Phaser.Scene{
     this.ground = this.physics.add.staticGroup();
     this.ground_1 = this.ground.create(0, 930, 'base').setScale(2).refreshBody();
     var newvar = this.cache.json.get('ctrls');
+    var tempo;
     if(this.song_num == 0){
-      var tempo = parseFloat(newvar.tempo);
+      tempo = parseFloat(newvar.tempo);
       this.speed = tempo/30;
       this.beats = newvar.beats;
     } else if(this.song_num == 1){
-      var tempo = parseFloat(newvar.tempo1);
+      tempo = parseFloat(newvar.tempo1);
       this.speed = tempo/30;
       this.beats = newvar.beats1;
     } else {
-      var tempo = parseFloat(newvar.tempo2);
+      tempo = parseFloat(newvar.tempo2);
       this.speed = tempo/30;
       this.beats = newvar.beats2;
     }
@@ -88,10 +98,24 @@ class GameScene extends Phaser.Scene{
 
     // create player
 
-    this.player = this.physics.add.sprite(0, 800, 'dude').setScale(2.3).refreshBody();
+    this.player = this.physics.add.sprite(0, 800, 'dude').setScale(2.5).refreshBody();
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
 
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('dude', { start: 1, end: 9 }),
+      frameRate: tempo/10,
+      repeat: -1
+      });
+  
+      this.anims.create({
+      key: 'jump',
+      frames: this.anims.generateFrameNumbers('dude', { start: 10, end: 13 }),
+      frameRate: (tempo/10)/3
+      });
+  
+      this.player.anims.play('right', true)
     // setting the gravity of the player
 
     this.player.body.setGravityY(300);
@@ -215,8 +239,11 @@ class GameScene extends Phaser.Scene{
     var cursors = this.input.keyboard.createCursorKeys();
 
     if (cursors.space.isDown && this.player.body.touching.down) {
+      this.player.anims.play('jump',true);
       this.player.setVelocityY(-800);
       this.player.setVelocityX(5);
+    }else if (this.player.body.touching.down){
+      this.player.anims.play('right',true);
     }
 
     // clears tint after 1s
