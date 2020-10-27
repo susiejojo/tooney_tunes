@@ -13,6 +13,7 @@ class GameScene extends Phaser.Scene{
     this.old_time = 0;
     this.tint_time = 0;
     this.obs_prob = 30;
+    this.old_score = 0;
 
     // add in specific song information
     this.songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
@@ -34,7 +35,7 @@ class GameScene extends Phaser.Scene{
     this.load.image('heart_3', 'assets/images/hearts60.png');
     this.load.image('heart_4', 'assets/images/hearts80.png');
     this.load.image('bomb', 'assets/images/bomb.png');
-    this.load.json('ctrls', 'assets/dat/info.json');
+    this.load.json('ctrls', 'assets/data/info.json');
     this.load.spritesheet('dude',
         'assets/images/dinoSprite.png',
         { frameWidth: 24, frameHeight: 24 }
@@ -279,6 +280,11 @@ class GameScene extends Phaser.Scene{
       }
   }
 
+
+  if(this.score - this.old_score > 100 && this.health < 4){
+    this.powerUp();
+  }
+
     // no health, game over
     if (this.health <= 0) {
       this.end();
@@ -298,6 +304,7 @@ class GameScene extends Phaser.Scene{
   loseHealth(player, obstacle) {
     obstacle.destroy();
     this.health -= 1;
+    this.old_score = this.score;
     this.health_bar.destroy();
     player.setTint(0xff0000);
     this.tint_time = this.clock.now;
@@ -316,6 +323,32 @@ class GameScene extends Phaser.Scene{
       this.music2.setMute(true);
       this.music3.setMute(false);
       this.music3.setSeek(curtime);
+    }
+    this.health_bar = this.add.image(700, 30, this.health_imgs[this.health]).setScale(1.3);
+    this.health_bar.setScrollFactor(0);
+  }
+
+  powerUp() {
+    this.health += 1;
+    this.old_score = this.score;
+    this.health_bar.destroy();
+    this.player.setTint(0x8de8fc);
+    this.tint_time = this.clock.now;
+    var curtime = this.music.seek;
+    if (this.health==4){
+      this.music.setMute(false);
+      this.music1.setMute(true);
+      this.music.setSeek(curtime);
+    }
+    if (this.health==3){
+      this.music2.setMute(true);
+      this.music1.setMute(false);
+      this.music1.setSeek(curtime);
+    }
+    if (this.health==2){
+      this.music3.setMute(true);
+      this.music2.setMute(false);
+      this.music2.setSeek(curtime);
     }
     this.health_bar = this.add.image(700, 30, this.health_imgs[this.health]).setScale(1.3);
     this.health_bar.setScrollFactor(0);
