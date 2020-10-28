@@ -12,6 +12,7 @@ class StartScene extends Phaser.Scene {
    this.load.image('feeling', 'assets/images/feeling.png');
    this.load.image('numb', 'assets/images/numb.png');
    this.load.image('roar', 'assets/images/roar.png');
+   this.load.image('parade', 'assets/images/parade.png');
  }
 
   create() {

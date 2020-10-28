@@ -17,7 +17,7 @@ class RestartScene extends Phaser.Scene {
 
 
     var button2 = this.add.image(400, scoreText.y + 100, 'restart', 0).setOrigin(0, 0).setInteractive();
-
+    button2.x = 400 - button2.width/2;
     button2.on('pointerup', function () {
       this.scene.start("pickMusic");
 

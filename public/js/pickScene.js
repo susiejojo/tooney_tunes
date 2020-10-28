@@ -10,8 +10,9 @@ class PickScene extends Phaser.Scene {
     // create buttons
     var button1 = this.add.image(0, 200, 'feeling', 0).setOrigin(0, 0).setInteractive();
     button1.x = 400 - (button1.width/2);
-    var button2 = this.add.image(button1.x, 200 + button1.height + 5, 'numb', 0).setOrigin(0, 0).setInteractive();
-    var button3 = this.add.image(button1.x, 200 + button1.height + button2.height + 10, 'roar', 0).setOrigin(0, 0).setInteractive();
+    var button2 = this.add.image(button1.x, 200 + button1.height, 'numb', 0).setOrigin(0, 0).setInteractive();
+    var button3 = this.add.image(button1.x, 200 + button1.height + button2.height, 'roar', 0).setOrigin(0, 0).setInteractive();
+    var button4 = this.add.image(button1.x, 200 + button1.height + button2.height + button3.height, 'parade', 0).setOrigin(0, 0).setInteractive();
 
 
     button1.on('pointerup', function () {
@@ -26,6 +27,11 @@ class PickScene extends Phaser.Scene {
 
     button3.on('pointerup', function () {
       this.scene.start("playGame", {song: 2});
+
+    }, this);
+
+    button4.on('pointerup', function () {
+      this.scene.start("playGame", {song: 3});
 
     }, this);
   }

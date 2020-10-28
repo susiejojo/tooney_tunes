@@ -11,15 +11,16 @@ class GameScene extends Phaser.Scene{
     this.speed;
     this.old_time = 0;
     this.tint_time = 0;
-    this.obs_prob = 30;
+    this.obs_prob = 20;
     this.old_shield_score = 0;
     this.old_powerup_score = 0;
     this.shielded = false;
 
-    // add in specific song information
+    // get song number from pickMusic scene
     this.songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
       ['song2.mp3', 'song2_vocals.mp3', 'song2_drums.mp3', 'song2_bass.mp3'],
-      ['song1.mp3', 'song1_vocals.mp3', 'song1_drums.mp3', 'song1_bass.mp3']];
+      ['song1.mp3', 'song1_vocals.mp3', 'song1_drums.mp3', 'song1_bass.mp3'],
+      ['song3.m4a', 'song3_vocals.mp3', 'song3_drums.mp3', 'song3_bass.mp3']];
     this.song_num = data.song;
   }
 
@@ -52,7 +53,11 @@ class GameScene extends Phaser.Scene{
     this.load.audio('music8', 'assets/music/' + this.songs[2][0]),
     this.load.audio('music9', 'assets/music/' + this.songs[2][1]),
     this.load.audio('music10', 'assets/music/' + this.songs[2][2]),
-    this.load.audio('music11', 'assets/music/' + this.songs[2][3])]
+    this.load.audio('music11', 'assets/music/' + this.songs[2][3]),
+    this.load.audio('music12', 'assets/music/' + this.songs[3][0]),
+    this.load.audio('music13', 'assets/music/' + this.songs[3][1]),
+    this.load.audio('music14', 'assets/music/' + this.songs[3][2]),
+    this.load.audio('music15', 'assets/music/' + this.songs[3][3])]
 
 
 
