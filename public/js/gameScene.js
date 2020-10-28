@@ -281,7 +281,7 @@ class GameScene extends Phaser.Scene{
       }
   }
   // gives the player one of two powerups
-  if(this.score - this.old_score > 100 && player.health < 4){
+  if(this.score - this.old_score > 100 && this.player.health < 4){
     var decide = Phaser.Math.Between(0,1);
     if(decide > 0){
       this.shield();
