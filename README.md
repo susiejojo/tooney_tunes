@@ -25,12 +25,12 @@ The user starts off by signing in from the landing page using their Spotify acco
 After the user signs in using Spotify, the game begins at the start menu. This page is located in `public/js/startScene.js`. After pressing the start button, they are redirected to the song choice menu.
 
 #### Song Choice Menu
-![Tooney Tunes Menu](res/img8.png)
+![Tooney Tunes Menu](res/img2.png)
 
 In the song choice menu, the user can choose one of three songs to play. After choosing a song, the user is redirected to the game. This page is located in `public/js/pickScene.js`.
 
 #### Restart Menu
-![Tooney Tunes Menu](res/img7.png)
+![Tooney Tunes Menu](res/img4.png)
 
 After finishing the game, the user can view their score, and choose to play another game. This page is located in `public/js/restartScene.js`.
 
