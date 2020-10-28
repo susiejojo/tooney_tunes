@@ -7,13 +7,13 @@ class GameScene extends Phaser.Scene{
     // set global variables
     this.score = 0;
     this.scoreText;
-    this.old_score = 0;
     this.health = 4;
     this.speed;
     this.old_time = 0;
     this.tint_time = 0;
     this.obs_prob = 30;
-    this.old_score = 0;
+    this.old_shield_score = 0;
+    this.old_powerup_score = 0;
     this.shielded = false;
 
     // add in specific song information
@@ -261,7 +261,7 @@ class GameScene extends Phaser.Scene{
 
 
     // clears tint after 1s
-    if(this.clock.now - this.tint_time > 1000){
+    if(!this.shielded && this.clock.now - this.tint_time > 1000){
       this.player.clearTint();
     }
 
@@ -281,13 +281,13 @@ class GameScene extends Phaser.Scene{
       }
   }
   // gives the player one of two powerups
-  if(this.score - this.old_score > 100 && this.player.health < 4){
-    var decide = Phaser.Math.Between(0,1);
-    if(decide > 0){
-      this.shield();
-    } else{
+  if(this.score - this.old_powerup_score > 550){
       this.powerUp();
-    }
+      this.old_powerup_score = this.score;
+  }
+  if(this.score - this.old_shield_score > 300){
+      this.shield();
+      this.old_shield_score = this.score;
   }
 
     // no health, game over
@@ -313,12 +313,9 @@ class GameScene extends Phaser.Scene{
 
   loseHealth(player, obstacle) {
     obstacle.destroy();
-    this.old_score = this.score;
     player.clearTint();
-    this.shielded = false;
     if(!this.shielded){
     this.health -= 1;
-    this.old_score = this.score;
     this.health_bar.destroy();
     player.setTint(0xff0000);
     this.tint_time = this.clock.now;
@@ -340,12 +337,16 @@ class GameScene extends Phaser.Scene{
     }
     this.health_bar = this.add.image(700, 30, this.health_imgs[this.health]).setScale(1.3);
     this.health_bar.setScrollFactor(0);
+
+  } else {
+    this.shielded = false;
   }
   }
 
   powerUp() {
+    if(this.health < 4){
     this.health += 1;
-    this.old_score = this.score;
+    }
     this.health_bar.destroy();
     if(!this.shielded){
       this.player.setTint(0x8de8fc);
