@@ -14,6 +14,7 @@ class GameScene extends Phaser.Scene{
     this.tint_time = 0;
     this.obs_prob = 30;
     this.old_score = 0;
+    this.shielded = false;
 
     // add in specific song information
     this.songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
@@ -279,10 +280,14 @@ class GameScene extends Phaser.Scene{
         break;
       }
   }
-
-
-  if(this.score - this.old_score > 100 && this.health < 4){
-    this.powerUp();
+  // gives the player one of two powerups
+  if(this.score - this.old_score > 100 && player.health < 4){
+    var decide = Phaser.Math.Between(0,1);
+    if(decide > 0){
+      this.shield();
+    } else{
+      this.powerUp();
+    }
   }
 
     // no health, game over
@@ -301,8 +306,17 @@ class GameScene extends Phaser.Scene{
     this.scene.start("restartGame", {score: this.score, song: this.song_num});
   }
 
+  shield(){
+    this.player.setTint(0x00fc1d);
+    this.shielded = true;
+  }
+
   loseHealth(player, obstacle) {
     obstacle.destroy();
+    this.old_score = this.score;
+    player.clearTint();
+    this.shielded = false;
+    if(!this.shielded){
     this.health -= 1;
     this.old_score = this.score;
     this.health_bar.destroy();
@@ -327,12 +341,15 @@ class GameScene extends Phaser.Scene{
     this.health_bar = this.add.image(700, 30, this.health_imgs[this.health]).setScale(1.3);
     this.health_bar.setScrollFactor(0);
   }
+  }
 
   powerUp() {
     this.health += 1;
     this.old_score = this.score;
     this.health_bar.destroy();
-    this.player.setTint(0x8de8fc);
+    if(!this.shielded){
+      this.player.setTint(0x8de8fc);
+    }
     this.tint_time = this.clock.now;
     var curtime = this.music.seek;
     if (this.health==4){
