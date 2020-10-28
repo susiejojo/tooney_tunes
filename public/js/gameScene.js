@@ -103,7 +103,7 @@ class GameScene extends Phaser.Scene{
     } else{
       tempo = parseFloat(newvar.tempo2);
       this.speed = 96.9/30;
-      this.beats = newvar.beats2;
+      this.beats = newvar.beats;
 
     }
 
