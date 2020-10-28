@@ -59,9 +59,9 @@ Every 300 points, the user gains a shield that prevents them from losing a life 
 
 ## Contributors
 
-- @susiejojo
-- @MondaleFelix
-- @eamspoker
+- [Dipanwita Guhathakurta](https://github.com/susiejojo)
+- [Mondale Felix](https://github.com/MondaleFelix)
+- [Emily Amspoker](https://github.com/eamspoker)
 
 
 
