@@ -96,10 +96,15 @@ class GameScene extends Phaser.Scene{
       tempo = parseFloat(newvar.tempo1);
       this.speed = tempo/30;
       this.beats = newvar.beats1;
-    } else {
+    } else if(this.song_num == 2){
       tempo = parseFloat(newvar.tempo2);
       this.speed = tempo/30;
       this.beats = newvar.beats2;
+    } else{
+      tempo = parseFloat(newvar.tempo2);
+      this.speed = 96.9/30;
+      this.beats = newvar.beats2;
+
     }
 
 
@@ -312,7 +317,6 @@ class GameScene extends Phaser.Scene{
 
     // let the player see that they have won, then end game
     if (this.isFinished && this.clock.now - this.finishTime > 2000){
-      console.log("yes");
       this.end();
     }
 
