@@ -15,6 +15,8 @@ class GameScene extends Phaser.Scene{
     this.old_shield_score = 0;
     this.old_powerup_score = 0;
     this.shielded = false;
+    this.finishTime = 0;
+    this.isFinished = false;
 
     // get song number from pickMusic scene
     this.songs = [['song.mp3','song_conb.mp3', 'song_drums.mp3', 'song_other.mp3'],
@@ -300,9 +302,24 @@ class GameScene extends Phaser.Scene{
       this.end();
     }
 
+    // start ending the game when the music stops
+    if (!this.music.isPlaying){
+      this.scoreText.setText('Level Complete!');
+      this.isFinished = true;
+      this.finishTime = this.clock.now;
+
+    }
+
+    // let the player see that they have won, then end game
+    if (this.isFinished && this.clock.now - this.finishTime > 2000){
+      console.log("yes");
+      this.end();
+    }
+
   }
 
   end(){
+    // stop everything and return to restart menu
     this.clock.stop();
     this.music.stop();
     this.music1.stop();
