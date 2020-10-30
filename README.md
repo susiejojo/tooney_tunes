@@ -3,6 +3,12 @@
 ## Description
 A web-based Phaser game that lets you play a platformer game from your Spotify playlist, and enjoy navigating through platforms, obstacles, collect tunes along the playback of your favorite songs!
 
+## Project link:
+https://devpost.com/software/tooney_tunes
+
+## Video Link:
+https://youtu.be/bv7nZMmdtUM
+
 ## Tech Used:
 
 - Phaser for gameplay
